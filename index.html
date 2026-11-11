@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="daylight">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gradien FinOps — 2030 Cloud Accounting & ERP (Next.js + Go Microservices)</title>
+  <!-- High-Legibility Geometric Sans & Tabular Mono Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- ====================================================================
+         SIDEBAR NAVIGATION
+         ==================================================================== -->
+    <aside class="sidebar">
+      <div class="brand-header">
+        <div class="brand-identity">
+          <div class="brand-mark">G</div>
+          <div class="brand-text">
+            <span class="brand-name">GRADIEN</span>
+            <span class="brand-edition">FINOPS // 2030.4</span>
+          </div>
+        </div>
+        <span class="badge badge-neutral mono">NO-GLOW UI</span>
+      </div>
+
+      <!-- Active Organization / Entity Context -->
+      <div class="entity-switcher">
+        <div class="entity-info">
+          <span class="entity-label" data-i18n="sidebar.activeEntity">Active Entity</span>
+          <span class="entity-name" id="activeEntityName">Nusantara Global Labs Pte.</span>
+        </div>
+        <span class="tier-pill" id="sidebarTierBadge">Small Biz</span>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="nav-scroll" aria-label="Main Accounting Navigation">
+        <div class="nav-group">
+          <div class="nav-group-label" data-i18n="nav.coreAccounting">Core Accounting</div>
+          
+          <button class="nav-item active" data-view="dashboard">
+            <span class="nav-item-left">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+              <span data-i18n="nav.dashboard">Executive Overview</span>
+            </span>
+          </button>
+
+          <button class="nav-item" data-view="sales">
+            <span class="nav-item-left">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              <span data-i18n="nav.sales">Sales & Invoicing</span>
+            </span>
+            <span class="nav-badge" id="navInvoiceCount">6</span>
+          </button>
+
+          <button class="nav-item" data-view="cashbank">
+            <span class="nav-item-left">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+              <span data-i18n="nav.cashbank">Cash & Bank Recon</span>
+            </span>
+            <span class="nav-badge" id="navReconBadge">3</span>
+          </button>
+
+          <button class="nav-item" data-view="expenses">
+            <span class="nav-item-left">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+              <span data-i18n="nav.expenses">Purchases & Expenses</span>
+            </span>
+          </button>
+        </div>
+
+        <div class="nav-group">
+          <div class="nav-group-label" data-i18n="nav.booksCompliance">Books & Compliance</div>
+
+          <button class="nav-item" data-view="ledger">
+            <span class="nav-item-left">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              <span data-i18n="nav.ledger">General Ledger & COA</span>
+            </span>
+          </button>
+
+          <button class="nav-item" data-view="reports">
+            <span class="nav-item-left">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              <span data-i18n="nav.reports">Financial Statements</span>
+            </span>
+          </button>
+        </div>
+
+        <div class="nav-group">
+          <div class="nav-group-label" data-i18n="nav.platformSystem">System & Platform</div>
+
+          <button class="nav-item" data-view="architecture">
+            <span class="nav-item-left">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              <span data-i18n="nav.architecture">Next.js + Go Blueprint</span>
+            </span>
+            <span class="nav-badge">gRPC</span>
+          </button>
+        </div>
+      </nav>
+
+      <!-- Sidebar Footer: Go Microservices Telemetry -->
+      <div class="sidebar-footer">
+        <div class="runtime-status">
+          <span class="status-dot-wrap">
+            <span class="status-dot"></span>
+            <span data-i18n="sidebar.meshHealthy">Go Ledger Mesh</span>
+          </span>
+          <span class="mono">1.8ms p99</span>
+        </div>
+        <div class="stack-tags">
+          <span class="stack-tag">Next.js 16 Edge</span>
+          <span class="stack-tag">Go 1.25 gRPC</span>
+          <span class="stack-tag">PostgreSQL</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ====================================================================
+         MAIN WORKSPACE
+         ==================================================================== -->
+    <div class="main-workspace">
+      <!-- Top Control Bar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="cmd-trigger" id="openCmdPaletteBtn" title="Quick Command Palette">
+            <span data-i18n="topbar.searchPlaceholder">Jump to account, invoice, or action...</span>
+            <span class="kbd-shortcut">Ctrl K</span>
+          </button>
+        </div>
+
+        <div class="topbar-controls">
+          <!-- Company Scale / Tier Switcher: UMKM vs Small Business vs Enterprise -->
+          <div class="control-group" role="group" aria-label="Business Tier Selector">
+            <span class="control-group-label" data-i18n="topbar.scaleLabel">Scale:</span>
+            <button class="seg-btn" data-tier="umkm" data-i18n="tier.umkm">UMKM / Micro</button>
+            <button class="seg-btn active" data-tier="small" data-i18n="tier.small">Small Business</button>
+            <button class="seg-btn" data-tier="enterprise" data-i18n="tier.enterprise">Enterprise</button>
+          </div>
+
+          <!-- Currency Toggle: International USD vs Local IDR -->
+          <div class="control-group" role="group" aria-label="Currency Selector">
+            <button class="seg-btn active" data-currency="USD">USD ($)</button>
+            <button class="seg-btn" data-currency="IDR">IDR (Rp)</button>
+          </div>
+
+          <!-- Language Toggle: English (Main) vs Bahasa Indonesia (Optional) -->
+          <div class="control-group" role="group" aria-label="Language Selector">
+            <button class="seg-btn active" data-lang="en">EN (Main)</button>
+            <button class="seg-btn" data-lang="id">ID (Indo)</button>
+          </div>
+
+          <!-- Matte Theme Switcher (Daylight vs Carbon — Both Zero Glow) -->
+          <button class="icon-btn" id="themeToggleBtn" title="Switch Matte Surface Theme">
+            <span id="themeToggleLabel">Matte Carbon</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Dynamic Tier Adaptation Context Bar -->
+      <div class="tier-context-bar">
+        <div class="tier-context-left">
+          <span class="tier-mode-tag" id="tierModeTag">TIER: SMALL BUSINESS</span>
+          <span class="tier-context-desc" id="tierContextDesc">
+            Full accrual double-entry accounting, automated bank feed reconciliation, AR/AP aging, and multi-rate tax compliance.
+          </span>
+        </div>
+        <div class="tier-feature-chips" id="tierFeatureChips">
+          <span class="feature-chip">go-ledger-svc</span>
+          <span class="feature-chip">go-invoice-svc</span>
+          <span class="feature-chip">go-recon-svc</span>
+          <span class="feature-chip">Multi-Tax VAT/PPN</span>
+        </div>
+      </div>
+
+      <!-- ==================================================================
+           MAIN VIEW CONTAINER
+           ================================================================== -->
+      <main class="workspace-body">
+
+        <!-- ================================================================
+             VIEW 1: EXECUTIVE OVERVIEW (DASHBOARD)
+             ================================================================ -->
+        <section class="module-view active" id="view-dashboard">
+          <div class="page-header">
+            <div class="page-title-group">
+              <span class="page-eyebrow" id="dashPeriodEyebrow">FISCAL PERIOD // Q4 2030 • REAL-TIME ACCRUAL LEDGER</span>
+              <h1 class="page-title" data-i18n="dashboard.title">Financial Command Center</h1>
+              <p class="page-subtitle" data-i18n="dashboard.subtitle">
+                Live cash position, receivables aging, and automated ledger health across connected banking rails.
+              </p>
+            </div>
+            <div class="page-actions">
+              <button class="btn btn-secondary" id="dashNewJournalBtn" data-i18n="actions.newJournal">+ Post Journal</button>
+              <button class="btn btn-primary" id="dashNewInvoiceBtn" data-i18n="actions.createInvoice">+ Create Sales Invoice</button>
+            </div>
+          </div>
+
+          <!-- 4 Core KPI Cards -->
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-label" data-i18n="kpi.netCash">Total Cash & Bank</span>
+                <span class="kpi-code">1-10100</span>
+              </div>
+              <div class="kpi-value" id="kpiCashValue">$148,920.00</div>
+              <div class="kpi-footer">
+                <span class="badge badge-positive">+14.2% MoM</span>
+                <span class="mono" data-i18n="kpi.syncedNow">Synced via OpenBanking</span>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-label" data-i18n="kpi.receivables">Accounts Receivable (AR)</span>
+                <span class="kpi-code">1-10200</span>
+              </div>
+              <div class="kpi-value" id="kpiArValue">$42,650.00</div>
+              <div class="kpi-footer">
+                <span class="badge badge-warning" id="kpiOverdueBadge">2 Overdue</span>
+                <span class="mono" id="kpiOpenInvCount">6 Open Invoices</span>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-label" data-i18n="kpi.payables">Accounts Payable (AP)</span>
+                <span class="kpi-code">2-20100</span>
+              </div>
+              <div class="kpi-value" id="kpiApValue">$16,400.00</div>
+              <div class="kpi-footer">
+                <span class="badge badge-neutral" data-i18n="kpi.due30d">Due within 30d</span>
+                <span class="mono">4 Vendor Bills</span>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-label" data-i18n="kpi.netProfit">Net Profit (YTD)</span>
+                <span class="kpi-code">3-30900</span>
+              </div>
+              <div class="kpi-value" id="kpiProfitValue">$89,340.00</div>
+              <div class="kpi-footer">
+                <span class="badge badge-positive">31.4% Margin</span>
+                <span class="mono" data-i18n="kpi.taxReady">Tax Provisioned</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chart + Receivables & Tier Feature Highlights -->
+          <div class="grid-2col">
+            <!-- Revenue vs Operating Expenses SVG Chart -->
+            <div class="panel">
+              <div class="panel-header">
+                <div class="panel-title-wrap">
+                  <h2 class="panel-title" data-i18n="dashboard.chartTitle">Revenue vs. Operating Expenses</h2>
+                  <span class="panel-subtitle" data-i18n="dashboard.chartSubtitle">6-Month Accrual Performance (Go Reporting Engine)</span>
+                </div>
+                <div class="chart-legend">
+                  <span class="legend-item"><span class="legend-swatch" style="background: var(--accent-primary);"></span> <span data-i18n="chart.revenue">Revenue</span></span>
+                  <span class="legend-item"><span class="legend-swatch" style="background: var(--border-strong);"></span> <span data-i18n="chart.expenses">Expenses</span></span>
+                </div>
+              </div>
+              <div class="panel-body">
+                <div class="svg-chart-wrap" id="cashflowChartContainer">
+                  <!-- Populated dynamically by app.js for crisp responsive SVG rendering -->
+                </div>
+              </div>
+            </div>
+
+            <!-- AR Aging & Action Queue -->
+            <div class="panel">
+              <div class="panel-header">
+                <div class="panel-title-wrap">
+                  <h2 class="panel-title" data-i18n="dashboard.agingTitle">Receivables Aging & Actions</h2>
+                  <span class="panel-subtitle" data-i18n="dashboard.agingSubtitle">Collection velocity & automated reminders</span>
+                </div>
+                <button class="btn btn-secondary btn-sm" data-goto="sales" data-i18n="dashboard.viewAllAr">View Invoices →</button>
+              </div>
+              <div class="panel-body">
+                <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-secondary);">
+                  <span data-i18n="aging.collectionHealth">Collection Health Index</span>
+                  <span class="mono" style="font-weight:700; color:var(--text-primary);">91.8% On-Time</span>
+                </div>
+                <div class="aging-bar-track">
+                  <div class="aging-segment" style="width: 62%; background-color: var(--status-positive-text);"></div>
+                  <div class="aging-segment" style="width: 24%; background-color: var(--accent-primary);"></div>
+                  <div class="aging-segment" style="width: 14%; background-color: var(--status-danger-text);"></div>
+                </div>
+                <div class="aging-list">
+                  <div class="aging-row">
+                    <div class="aging-row-left">
+                      <span class="legend-swatch" style="background: var(--status-positive-text);"></span>
+                      <span data-i18n="aging.current">Current (0–30 Days)</span>
+                    </div>
+                    <span class="mono cell-primary" id="agingCurrentVal">$26,443.00</span>
+                  </div>
+                  <div class="aging-row">
+                    <div class="aging-row-left">
+                      <span class="legend-swatch" style="background: var(--accent-primary);"></span>
+                      <span data-i18n="aging.due31_60">Due 31–60 Days</span>
+                    </div>
+                    <span class="mono cell-primary" id="aging30Val">$10,236.00</span>
+                  </div>
+                  <div class="aging-row">
+                    <div class="aging-row-left">
+                      <span class="legend-swatch" style="background: var(--status-danger-text);"></span>
+                      <span data-i18n="aging.overdue60">Overdue 60+ Days</span>
+                    </div>
+                    <span class="mono cell-primary" id="aging60Val">$5,971.00</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Invoices & Bank Recon Snapshot -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title-wrap">
+                <h2 class="panel-title" data-i18n="dashboard.recentTxTitle">Recent Ledger & Commercial Activity</h2>
+                <span class="panel-subtitle" data-i18n="dashboard.recentTxSubtitle">Immutable audit log backed by Go Ledger Service</span>
+              </div>
+              <button class="btn btn-secondary btn-sm" data-goto="ledger" data-i18n="dashboard.openLedger">Open General Ledger →</button>
+            </div>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th data-i18n="table.docNo">Doc / Ref #</th>
+                    <th data-i18n="table.counterparty">Counterparty / Entity</th>
+                    <th data-i18n="table.category">Account / Category</th>
+                    <th data-i18n="table.date">Date</th>
+                    <th data-i18n="table.status">Status</th>
+                    <th class="text-right" data-i18n="table.amount">Amount</th>
+                  </tr>
+                </thead>
+                <tbody id="dashboardRecentTableBody">
+                  <!-- Populated by app.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             VIEW 2: SALES & INVOICING (PENJUALAN & FAKTUR)
+             ================================================================ -->
+        <section class="module-view" id="view-sales">
+          <div class="page-header">
+            <div class="page-title-group">
+              <span class="page-eyebrow">SERVICE // GO-INVOICE-SVC • MULTI-CURRENCY & E-FAKTUR READY</span>
+              <h1 class="page-title" data-i18n="sales.title">Sales & Customer Invoicing</h1>
+              <p class="page-subtitle" data-i18n="sales.subtitle">
+                Manage commercial invoices, automated payment links (Stripe / QRIS / Virtual Account), and real-time AR posting.
+              </p>
+            </div>
+            <div class="page-actions">
+              <button class="btn btn-primary" id="salesNewInvoiceBtn" data-i18n="actions.createInvoice">+ Create Sales Invoice</button>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="table-toolbar">
+              <div class="search-input-wrap">
+                <input type="text" class="search-input" id="invoiceSearchInput" placeholder="Filter by customer or INV number..." />
+              </div>
+              <div class="control-group" id="invoiceStatusFilterGroup">
+                <button class="seg-btn active" data-inv-filter="ALL" data-i18n="filter.all">All</button>
+                <button class="seg-btn" data-inv-filter="PAID" data-i18n="filter.paid">Paid</button>
+                <button class="seg-btn" data-inv-filter="PENDING" data-i18n="filter.pending">Awaiting</button>
+                <button class="seg-btn" data-inv-filter="OVERDUE" data-i18n="filter.overdue">Overdue</button>
+              </div>
+            </div>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th data-i18n="table.invoiceNo">Invoice #</th>
+                    <th data-i18n="table.customer">Customer</th>
+                    <th data-i18n="table.issueDate">Issue Date</th>
+                    <th data-i18n="table.dueDate">Due Date</th>
+                    <th data-i18n="table.tax">Tax (VAT/PPN)</th>
+                    <th data-i18n="table.status">Status</th>
+                    <th class="text-right" data-i18n="table.total">Total</th>
+                    <th class="text-right" data-i18n="table.action">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="salesInvoiceTableBody">
+                  <!-- Populated by app.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             VIEW 3: CASH, BANK & RECONCILIATION (KAS, BANK & REKONSILIASI)
+             ================================================================ -->
+        <section class="module-view" id="view-cashbank">
+          <div class="page-header">
+            <div class="page-title-group">
+              <span class="page-eyebrow">SERVICE // GO-RECON-ENGINE • DETERMINISTIC + AI RULE MATCHING</span>
+              <h1 class="page-title" data-i18n="cashbank.title">Cash, Bank Feeds & Smart Reconciliation</h1>
+              <p class="page-subtitle" data-i18n="cashbank.subtitle">
+                Direct bank feeds across international (Mercury USD, Wise EUR) and local Indonesian banks (BCA, Mandiri) with 1-click ledger matching.
+              </p>
+            </div>
+          </div>
+
+          <!-- Bank Accounts Row -->
+          <div class="kpi-grid" id="bankAccountsGrid">
+            <!-- Populated by app.js -->
+          </div>
+
+          <!-- Auto-Matching Reconciliation Queue -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title-wrap">
+                <h2 class="panel-title" data-i18n="cashbank.reconQueueTitle">Automated Bank Statement Matching Queue</h2>
+                <span class="panel-subtitle" data-i18n="cashbank.reconQueueSubtitle">Confirm matched pairs to post balanced journal entries automatically</span>
+              </div>
+            </div>
+            <div class="recon-list" id="reconQueueContainer">
+              <!-- Populated by app.js -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             VIEW 4: PURCHASES & EXPENSES (BIAYA & PEMBELIAN)
+             ================================================================ -->
+        <section class="module-view" id="view-expenses">
+          <div class="page-header">
+            <div class="page-title-group">
+              <span class="page-eyebrow">SERVICE // GO-PROCUREMENT-SVC • OCR RECEIPT & VENDOR AP</span>
+              <h1 class="page-title" data-i18n="expenses.title">Purchases, Vendor Bills & Corporate Spend</h1>
+              <p class="page-subtitle" data-i18n="expenses.subtitle">
+                Track supplier bills, operational expenses, withholding tax (PPh 23 / 1099), and approval workflows.
+              </p>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th data-i18n="table.billNo">Bill #</th>
+                    <th data-i18n="table.vendor">Vendor / Supplier</th>
+                    <th data-i18n="table.expenseAcct">Expense Account</th>
+                    <th data-i18n="table.dueDate">Due Date</th>
+                    <th data-i18n="table.approval">Approval</th>
+                    <th class="text-right" data-i18n="table.amount">Amount</th>
+                  </tr>
+                </thead>
+                <tbody id="expensesTableBody">
+                  <!-- Populated by app.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             VIEW 5: GENERAL LEDGER & CHART OF ACCOUNTS (BUKU BESAR & COA)
+             ================================================================ -->
+        <section class="module-view" id="view-ledger">
+          <div class="page-header">
+            <div class="page-title-group">
+              <span class="page-eyebrow">SERVICE // GO-LEDGER-CORE • IMMUTABLE DOUBLE-ENTRY ENGINE</span>
+              <h1 class="page-title" data-i18n="ledger.title">Chart of Accounts & General Ledger</h1>
+              <p class="page-subtitle" data-i18n="ledger.subtitle">
+                IFRS & PSAK compliant multi-dimensional Chart of Accounts with real-time trial balance verification.
+              </p>
+            </div>
+            <div class="page-actions">
+              <button class="btn btn-primary" id="ledgerNewJournalBtn" data-i18n="actions.newJournal">+ Post Journal</button>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title-wrap">
+                <h2 class="panel-title" data-i18n="ledger.coaTitle">Master Chart of Accounts (Daftar Akun)</h2>
+                <span class="panel-subtitle" data-i18n="ledger.coaSubtitle">Balances updated atomically on every posted journal transaction</span>
+              </div>
+            </div>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th data-i18n="table.acctCode">Account Code</th>
+                    <th data-i18n="table.acctName">Account Name</th>
+                    <th data-i18n="table.acctType">Category / Classification</th>
+                    <th data-i18n="table.normalBal">Normal Balance</th>
+                    <th class="text-right" data-i18n="table.balance">Current Balance</th>
+                  </tr>
+                </thead>
+                <tbody id="coaTableBody">
+                  <!-- Populated by app.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             VIEW 6: FINANCIAL REPORTS & TAX (LAPORAN KEUANGAN & PAJAK)
+             ================================================================ -->
+        <section class="module-view" id="view-reports">
+          <div class="page-header">
+            <div class="page-title-group">
+              <span class="page-eyebrow">SERVICE // GO-REPORTING-OLAP • INSTANT IN-MEMORY AGGREGATION</span>
+              <h1 class="page-title" data-i18n="reports.title">Financial Statements & Tax Compliance</h1>
+              <p class="page-subtitle" data-i18n="reports.subtitle">
+                Audit-ready Profit & Loss (Laba Rugi), Balance Sheet (Neraca), and automated local/international tax summaries.
+              </p>
+            </div>
+            <div class="page-actions">
+              <div class="control-group" id="reportTypeSwitcher">
+                <button class="seg-btn active" data-report="pnl" data-i18n="reports.pnlTab">Profit & Loss (Laba Rugi)</button>
+                <button class="seg-btn" data-report="bs" data-i18n="reports.bsTab">Balance Sheet (Neraca)</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title-wrap">
+                <h2 class="panel-title" id="activeReportTitle">Statement of Profit & Loss</h2>
+                <span class="panel-subtitle">Period: Jan 1, 2030 – Nov 7, 2030 • Accrual Basis</span>
+              </div>
+              <span class="badge badge-positive mono">DEBIT == CREDIT VERIFIED</span>
+            </div>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th data-i18n="table.acctCode">Code</th>
+                    <th data-i18n="table.lineItem">Statement Line Item</th>
+                    <th class="text-right" data-i18n="table.periodActual">YTD 2030 Actual</th>
+                    <th class="text-right" data-i18n="table.pctRev">% of Revenue</th>
+                  </tr>
+                </thead>
+                <tbody id="financialReportTableBody">
+                  <!-- Populated by app.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             VIEW 7: NEXT.JS + GO MICROSERVICES BLUEPRINT
+             ================================================================ -->
+        <section class="module-view" id="view-architecture">
+          <div class="page-header">
+            <div class="page-title-group">
+              <span class="page-eyebrow">SYSTEM TOPOLOGY // NEXT.JS APP ROUTER + GO 1.25 MICROSERVICES</span>
+              <h1 class="page-title" data-i18n="arch.title">SaaS Microservices & Multi-Tier Architecture</h1>
+              <p class="page-subtitle" data-i18n="arch.subtitle">
+                Designed to scale from single-owner UMKM cashbooks to multi-entity global enterprises without rewriting core domain logic.
+              </p>
+            </div>
+          </div>
+
+          <div class="arch-grid" id="archServicesGrid">
+            <!-- Populated by app.js -->
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       MODAL 1: CREATE SALES INVOICE
+       ====================================================================== -->
+  <div class="modal-backdrop" id="invoiceModalBackdrop" role="dialog" aria-modal="true">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3 class="modal-title" data-i18n="modal.newInvoiceTitle">Create Sales Invoice (go-invoice-svc)</h3>
+        <button class="icon-btn" data-close-modal="invoiceModalBackdrop">✕</button>
+      </div>
+      <form id="createInvoiceForm">
+        <div class="modal-body">
+          <div class="form-grid">
+            <div class="form-field">
+              <label class="form-label" data-i18n="modal.customerName">Customer / Client Entity</label>
+              <input type="text" class="form-input" id="invCustomerInput" required placeholder="e.g., PT Krakatau Digital / Stripe Inc." />
+            </div>
+            <div class="form-field">
+              <label class="form-label" data-i18n="modal.dueDate">Due Date</label>
+              <input type="date" class="form-input" id="invDueInput" required value="2030-11-30" />
+            </div>
+            <div class="form-field">
+              <label class="form-label" data-i18n="modal.subtotal">Subtotal Amount (USD Base)</label>
+              <input type="number" step="0.01" min="10" class="form-input mono" id="invAmountInput" required value="4500" />
+            </div>
+            <div class="form-field">
+              <label class="form-label" data-i18n="modal.taxRate">Tax Regime (VAT / PPN / GST)</label>
+              <select class="form-select" id="invTaxSelect">
+                <option value="0.11">PPN Indonesia (11%)</option>
+                <option value="0.09">Singapore GST (9%)</option>
+                <option value="0.00">Export Zero-Rated (0%)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <span class="mono" id="invLiveTotalPreview">Total + Tax: $4,995.00</span>
+          <div style="display:flex; gap:8px;">
+            <button type="button" class="btn btn-secondary" data-close-modal="invoiceModalBackdrop" data-i18n="modal.cancel">Cancel</button>
+            <button type="submit" class="btn btn-primary" data-i18n="modal.postInvoice">Issue & Post to AR Ledger</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       MODAL 2: POST DOUBLE-ENTRY JOURNAL
+       ====================================================================== -->
+  <div class="modal-backdrop" id="journalModalBackdrop" role="dialog" aria-modal="true">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3 class="modal-title" data-i18n="modal.newJournalTitle">Post Double-Entry Journal (go-ledger-core)</h3>
+        <button class="icon-btn" data-close-modal="journalModalBackdrop">✕</button>
+      </div>
+      <form id="createJournalForm">
+        <div class="modal-body">
+          <div class="form-grid">
+            <div class="form-field full">
+              <label class="form-label" data-i18n="modal.journalMemo">Journal Memo / Narration</label>
+              <input type="text" class="form-input" id="jrnMemoInput" required placeholder="e.g., Monthly Cloud Infrastructure Accrual" />
+            </div>
+            <div class="form-field">
+              <label class="form-label" data-i18n="modal.debitAccount">Debit Account (Dr)</label>
+              <select class="form-select" id="jrnDebitAcct">
+                <option value="6-60100">6-60100 • Cloud & Tech Infrastructure</option>
+                <option value="1-10100">1-10100 • Cash & Bank Operating</option>
+                <option value="1-10200">1-10200 • Accounts Receivable</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label class="form-label" data-i18n="modal.creditAccount">Credit Account (Cr)</label>
+              <select class="form-select" id="jrnCreditAcct">
+                <option value="1-10100">1-10100 • Cash & Bank Operating</option>
+                <option value="2-20100">2-20100 • Accounts Payable</option>
+                <option value="4-40100">4-40100 • SaaS Subscription Revenue</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label class="form-label" data-i18n="modal.debitAmount">Debit Amount ($)</label>
+              <input type="number" step="0.01" min="1" class="form-input mono" id="jrnDebitVal" required value="1250" />
+            </div>
+            <div class="form-field">
+              <label class="form-label" data-i18n="modal.creditAmount">Credit Amount ($)</label>
+              <input type="number" step="0.01" min="1" class="form-input mono" id="jrnCreditVal" required value="1250" />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <span class="badge badge-positive mono" id="jrnBalanceStatus">BALANCED: DR $1,250 == CR $1,250</span>
+          <div style="display:flex; gap:8px;">
+            <button type="button" class="btn btn-secondary" data-close-modal="journalModalBackdrop" data-i18n="modal.cancel">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="jrnSubmitBtn" data-i18n="modal.commitJournal">Commit Atomic Journal</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       MODAL 3: COMMAND PALETTE (Ctrl+K / ⌘K)
+       ====================================================================== -->
+  <div class="modal-backdrop" id="cmdPaletteBackdrop" role="dialog" aria-modal="true">
+    <div class="modal-window" style="max-width: 540px;">
+      <div class="modal-header">
+        <input type="text" class="search-input" id="cmdSearchInput" placeholder="Type a command or jump to module (e.g., Invoice, Recon, ID, UMKM)..." style="border:none; font-size:14px; padding:4px 0; width:100%;" />
+        <button class="icon-btn" data-close-modal="cmdPaletteBackdrop">ESC</button>
+      </div>
+      <div class="modal-body" style="padding: 10px;" id="cmdPaletteList">
+        <!-- Populated by app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
